@@ -42,17 +42,16 @@ namespace LekkerLokaalApp.Views
         {
             var ScannerPage = new ZXingScannerPage();
 
+            await Navigation.PushAsync(ScannerPage);
+
             ScannerPage.OnScanResult += (result) => {
                 ScannerPage.IsScanning = false;
 
-                //Wat er moet gebeuren nadat de scanner een QR-code gedecteerd heeft
                 Device.BeginInvokeOnMainThread(() => {
                     Navigation.PopAsync();
-                    DisplayAlert("Scanresultaat", result.Text, "Oke");
+                    Navigation.PushAsync(new VerificatiePage(result.Text));
                 });
             };
-
-            await Navigation.PushAsync(ScannerPage);
         }
 
         private async void SignInProcedure(object sender, EventArgs e)

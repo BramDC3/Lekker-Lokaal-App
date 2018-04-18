@@ -17,7 +17,7 @@ namespace LekkerLokaalApp
 			InitializeComponent();
 
             MainPage = new NavigationPage(new LekkerLokaalApp.Views.LoginPage());
-            //MainPage = new NavigationPage(new LekkerLokaalApp.MainPage());
+            //MainPage = new NavigationPage(new LekkerLokaalApp.Views.VerificatiePage("test"));
         }
 
 		protected override void OnStart ()
