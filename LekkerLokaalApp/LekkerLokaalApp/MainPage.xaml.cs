@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using ZXing.Net.Mobile.Forms;
 
 namespace LekkerLokaalApp
 {
@@ -13,5 +14,5 @@ namespace LekkerLokaalApp
 		{
 			InitializeComponent();
 		}
-	}
+    }
 }

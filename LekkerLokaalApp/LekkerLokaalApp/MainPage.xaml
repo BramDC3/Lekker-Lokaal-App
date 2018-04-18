@@ -4,8 +4,8 @@
              xmlns:local="clr-namespace:LekkerLokaalApp"
              x:Class="LekkerLokaalApp.MainPage">
 
-	<Label Text="Welcome to Xamarin.Forms!" 
-           VerticalOptions="Center" 
-           HorizontalOptions="Center" />
+    <StackLayout>
+        <Button Text="Open Scanner" Clicked="OpenScanner"/>
+    </StackLayout>
 
 </ContentPage>

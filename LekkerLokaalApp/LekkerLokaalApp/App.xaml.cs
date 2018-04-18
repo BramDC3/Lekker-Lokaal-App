@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LekkerLokaalApp.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,14 +8,17 @@ using Xamarin.Forms;
 
 namespace LekkerLokaalApp
 {
-	public partial class App : Application
+    public partial class App : Application
 	{
-		public App ()
+        static UserDatabaseController userDatabase;
+
+        public App ()
 		{
 			InitializeComponent();
 
-			MainPage = new LekkerLokaalApp.MainPage();
-		}
+            MainPage = new NavigationPage(new LekkerLokaalApp.Views.LoginPage());
+            //MainPage = new NavigationPage(new LekkerLokaalApp.MainPage());
+        }
 
 		protected override void OnStart ()
 		{
@@ -30,5 +34,17 @@ namespace LekkerLokaalApp
 		{
 			// Handle when your app resumes
 		}
-	}
+
+        public static UserDatabaseController UserDatabase
+        {
+            get
+            {
+                if (userDatabase == null)
+                {
+                    userDatabase = new UserDatabaseController();
+                }
+                return userDatabase;
+            }
+        }
+    }
 }
