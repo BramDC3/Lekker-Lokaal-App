@@ -19,6 +19,7 @@ namespace LekkerLokaalApp.Views
 	{
         private const string url = "https://www.bramdeconinck.com/apps/lekkerlokaal/v1/handelaars/";
         private HttpClient _Client = new HttpClient(new NativeMessageHandler());
+        Handelaar handelaar;
 
         public LoginPage ()
 		{
@@ -49,7 +50,7 @@ namespace LekkerLokaalApp.Views
 
                 Device.BeginInvokeOnMainThread(() => {
                     Navigation.PopAsync();
-                    Navigation.PushAsync(new VerificatiePage(result.Text));
+                    Navigation.PushAsync(new VerificatiePage(handelaar, result.Text));
                 });
             };
         }
@@ -65,7 +66,7 @@ namespace LekkerLokaalApp.Views
                     {
                         var content = await _Client.GetStringAsync(url + "/" + user.Username + "/" + user.Password);
                         var handelaarListTemp = JsonConvert.DeserializeObject<List<Handelaar>>(content);
-                        var handelaar = handelaarListTemp[0];
+                        handelaar = handelaarListTemp[0];
 
                         User dbUser = App.UserDatabase.GetUser();
                         if (dbUser == null)

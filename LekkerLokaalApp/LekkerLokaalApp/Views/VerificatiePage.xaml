@@ -3,12 +3,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LekkerLokaalApp.Views.VerificatiePage">
     <ContentPage.Content>
-        <Frame x:Name="ValidatieFrame" Padding="20,20,20,20" HasShadow="False" HorizontalOptions="FillAndExpand" OutlineColor="Black" BackgroundColor="Green" CornerRadius="0" >
-            <StackLayout BackgroundColor="White">
-                <Label x:Name="QRcode"
-                    Text="Welcome to Xamarin.Forms!"
-                    VerticalOptions="CenterAndExpand" 
-                    HorizontalOptions="CenterAndExpand" />
+        <Frame x:Name="ValidatieFrame" Padding="20,20,20,20" HasShadow="False" HorizontalOptions="FillAndExpand" OutlineColor="Black" BackgroundColor="#ff0000" CornerRadius="0">
+            <StackLayout x:Name="MasterLayout" BackgroundColor="LightGray">
+
+                <StackLayout x:Name="LogoStack" VerticalOptions="FillAndExpand">
+                    <Image x:Name="VerificatieAfbeelding" Source="Kruisje.png" Margin="0,50,0,15" />
+                    <Label x:Name="VerificatieStatus" Text="Verificatie mislukt!" FontSize="Large" HorizontalOptions="Center" />
+                </StackLayout>
+
+                <StackLayout x:Name="BoodschapStack" VerticalOptions="StartAndExpand">
+                    <StackLayout.Padding>
+                        <OnIdiom x:TypeArguments="Thickness">
+                            <OnIdiom.Phone>40,0,40,0</OnIdiom.Phone>
+                            <OnIdiom.Tablet>140,150,140,0</OnIdiom.Tablet>
+                        </OnIdiom>
+                    </StackLayout.Padding>
+
+                    <Label x:Name="Lbl_Status" Text="Er is iets misgegaan tijdens het valideren van de cadeaubon." HorizontalOptions="CenterAndExpand" />
+                    <Label x:Name="Lbl_Melding" Text="De cadeaubon is meer dan één jaar oud en dus vervallen." HorizontalOptions="CenterAndExpand" Margin="0,0,0,10" />
+                    <Button x:Name="Btn_Opnieuw" Text="Probeer opnieuw" Clicked="OpnieuwProcedure" />
+                    <Button x:Name="Btn_SluitAf" Text="Sluit app af" Clicked="AfsluitProcedure" VerticalOptions="End" />
+                </StackLayout>
             </StackLayout>
         </Frame>
     </ContentPage.Content>

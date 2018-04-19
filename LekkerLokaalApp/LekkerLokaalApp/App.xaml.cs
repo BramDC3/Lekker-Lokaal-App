@@ -1,4 +1,5 @@
 ﻿using LekkerLokaalApp.Data;
+using LekkerLokaalApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +17,8 @@ namespace LekkerLokaalApp
 		{
 			InitializeComponent();
 
-            MainPage = new NavigationPage(new LekkerLokaalApp.Views.LoginPage());
-            //MainPage = new NavigationPage(new LekkerLokaalApp.Views.VerificatiePage("test"));
+            //MainPage = new NavigationPage(new LekkerLokaalApp.Views.LoginPage());
+            MainPage = new NavigationPage(new LekkerLokaalApp.Views.VerificatiePage(new Handelaar { Naam = "Joske" }, "Hallooo"));
         }
 
 		protected override void OnStart ()

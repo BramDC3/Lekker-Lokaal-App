@@ -144,4 +144,10 @@
   <ItemGroup>
     <BundleResource Include="Resources\LoginIcon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Kruisje.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Vinkje.png" />
+  </ItemGroup>
 </Project>
