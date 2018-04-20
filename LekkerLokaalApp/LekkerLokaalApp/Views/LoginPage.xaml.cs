@@ -14,18 +14,19 @@ using ZXing.Net.Mobile.Forms;
 
 namespace LekkerLokaalApp.Views
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class LoginPage : ContentPage
-	{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class LoginPage : ContentPage
+    {
         private const string url = "https://www.bramdeconinck.com/apps/lekkerlokaal/v1/handelaars/";
         private HttpClient _Client = new HttpClient(new NativeMessageHandler());
         Handelaar handelaar;
 
-        public LoginPage ()
-		{
-			InitializeComponent ();
+        public LoginPage()
+        {
+            InitializeComponent();
             Init();
-		}
+            VulVeldenMetGegevensUitDB();
+        }
 
         private void Init()
         {
@@ -39,16 +40,28 @@ namespace LekkerLokaalApp.Views
             Entry_Password.Completed += (s, e) => SignInProcedure(s, e);
         }
 
+        private void VulVeldenMetGegevensUitDB()
+        {
+            User dbUser = App.UserDatabase.GetUser();
+            if (dbUser != null)
+            {
+                Entry_Username.Text = dbUser.Username;
+                Entry_Password.Text = dbUser.Password;
+            }
+        }
+
         public async void Scanner()
         {
             var ScannerPage = new ZXingScannerPage();
 
             await Navigation.PushAsync(ScannerPage);
 
-            ScannerPage.OnScanResult += (result) => {
+            ScannerPage.OnScanResult += (result) =>
+            {
                 ScannerPage.IsScanning = false;
 
-                Device.BeginInvokeOnMainThread(() => {
+                Device.BeginInvokeOnMainThread(() =>
+                {
                     Navigation.PopAsync();
                     Navigation.PushAsync(new VerificatiePage(handelaar, result.Text));
                 });
@@ -68,11 +81,12 @@ namespace LekkerLokaalApp.Views
                         var handelaarListTemp = JsonConvert.DeserializeObject<List<Handelaar>>(content);
                         handelaar = handelaarListTemp[0];
 
+                        if (handelaar.EersteAanmelding == "1")
+                            await DisplayAlert("Aanmelding", "Welkom, " + handelaar.Naam + "!" + " Aangezien dit uw eerste aanmelding is, verzoeken we u om een nieuw wachtwoord in te stellen en eventueel een smartlock toe te voegen.", "Oke");
+
                         User dbUser = App.UserDatabase.GetUser();
                         if (dbUser == null)
                             App.UserDatabase.SaveUser(user);
-
-                        await DisplayAlert("Aanmelding", "Welkom, " + handelaar.Naam + "!" + " Uw BTW nummer is " + handelaar.BTW_Nummer, "Oke");
 
                         Scanner();
                     }
