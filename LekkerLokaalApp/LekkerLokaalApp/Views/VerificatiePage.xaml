@@ -19,10 +19,8 @@
                         </OnIdiom>
                     </StackLayout.Padding>
 
-                    <Label x:Name="Lbl_Status" Text="Er is iets misgegaan tijdens het valideren van de cadeaubon." HorizontalOptions="CenterAndExpand" />
-                    <Label x:Name="Lbl_Melding" Text="De cadeaubon is meer dan één jaar oud en dus vervallen." HorizontalOptions="CenterAndExpand" Margin="0,0,0,10" />
-                    <Button x:Name="Btn_Opnieuw" Text="Probeer opnieuw" Clicked="OpnieuwProcedure" />
-                    <Button x:Name="Btn_SluitAf" Text="Sluit app af" Clicked="AfsluitProcedure" VerticalOptions="End" />
+                    <Label x:Name="Lbl_Melding" Text="Er is een fout opgetreden bij het ophalen van de gegevens." HorizontalOptions="CenterAndExpand" Margin="0,0,0,10" FontSize="Medium" />
+                    <Button x:Name="Btn_Procedure" Text="Probeer opnieuw" Clicked="Procedure" VerticalOptions="End" Margin="0,25,0,0"/>
                 </StackLayout>
             </StackLayout>
         </Frame>
