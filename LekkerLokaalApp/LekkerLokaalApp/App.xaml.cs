@@ -12,13 +12,13 @@ namespace LekkerLokaalApp
     public partial class App : Application
 	{
         static UserDatabaseController userDatabase;
+        static HandelaarDatabaseController handelaarDatabase;
 
         public App ()
 		{
 			InitializeComponent();
 
             MainPage = new NavigationPage(new LekkerLokaalApp.Views.LoginPage());
-            //MainPage = new NavigationPage(new LekkerLokaalApp.Views.VerificatiePage(new Handelaar { Naam = "Joske" }, "Hallooo"));
         }
 
 		protected override void OnStart ()
@@ -45,6 +45,18 @@ namespace LekkerLokaalApp
                     userDatabase = new UserDatabaseController();
                 }
                 return userDatabase;
+            }
+        }
+
+        public static HandelaarDatabaseController HandelaarDatabase
+        {
+            get
+            {
+                if (handelaarDatabase == null)
+                {
+                    handelaarDatabase = new HandelaarDatabaseController();
+                }
+                return handelaarDatabase;
             }
         }
     }

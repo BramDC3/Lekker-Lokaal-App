@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using ZXing.Net.Mobile.Forms;
 
 namespace LekkerLokaalApp.Views
 {
@@ -51,9 +52,16 @@ namespace LekkerLokaalApp.Views
                     case 0:
                         if (cadeaubon.AanmaakDatum.Date.AddYears(1) <= DateTime.Today.Date)
                         {
-                            Lbl_Melding.Text = "Deze cadeaubon is meer dan één jaar oud en daardoor niet meer bruikbaar.";
-                            cadeaubon.Geldigheid = 2;
-                            await CadeaubonPut(cadeaubon);
+                            try
+                            {
+                                Lbl_Melding.Text = "Deze cadeaubon is meer dan één jaar oud en daardoor niet meer bruikbaar.";
+                                cadeaubon.Geldigheid = 2;
+                                await CadeaubonPut(cadeaubon);
+                            }
+                            catch (Exception)
+                            {
+                                await DisplayAlert("Aanmelding", "Er is een onverwachte fout opgetreden. Gelieve het later opnieuw te proberen.", "Oke");
+                            }
                         }
                         else if (cadeaubon.Gebruikersnaam != handelaar.Gebruikersnaam && cadeaubon.Gebruikersnaam != "generiek")
                         {
@@ -68,6 +76,8 @@ namespace LekkerLokaalApp.Views
 
                             Lbl_Melding.Text = String.Format("Naam: {0} \n\nBedrag: € {1}", cadeaubon.Naam, cadeaubon.Prijs);
                             Btn_Procedure.Text = "Valideer cadeaubon";
+
+                            Valideerbaar = true;
                         }
                         break;
                     case 1:
@@ -105,12 +115,62 @@ namespace LekkerLokaalApp.Views
         {
             if (Valideerbaar)
             {
-                DisplayAlert("Aanmelding", "Validatie", "Oke");
+                ValiderenOnClicked();
             }
             else
             {
-
+                Scanner();
             }
+        }
+
+        public async void ValiderenOnClicked()
+        {
+            var result = await DisplayAlert("Validatie", "U staat op het punt om de cadeaubon te valideren. " +
+                                            "Hierdoor zal de volledige waarde (€ " + cadeaubon.Prijs + ") gebruikt worden. Wilt u verder gaan met valideren?", "Nee", "Ja");
+            if (!result)
+            {
+                try
+                {
+                    if (cadeaubon.Gebruikersnaam == "generiek")
+                        cadeaubon.HandelaarId = App.HandelaarDatabase.GetHandelaar().HandelaarId;
+                    cadeaubon.Geldigheid = 3;
+                    await CadeaubonPut(cadeaubon);
+
+                    await Navigation.PushAsync(new ValidatiePage());
+                }
+                catch (Exception)
+                {
+                    await DisplayAlert("Aanmelding", "Er is een onverwachte fout opgetreden. Gelieve het later opnieuw te proberen.", "Oke");
+                }
+            }
+        }
+
+        public async void Scanner()
+        {
+            var ScannerPage = new ZXingScannerPage();
+
+            await Navigation.PushAsync(ScannerPage);
+
+            ScannerPage.OnScanResult += (result) =>
+            {
+                ScannerPage.IsScanning = false;
+
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    Navigation.PopAsync();
+                    Navigation.PushAsync(new VerificatiePage(App.HandelaarDatabase.GetHandelaar(), result.Text));
+                });
+            };
+        }
+
+        private void TerugNaarBegin(object sender, EventArgs e)
+        {
+            TerugNaarRoot();
+        }
+
+        private async void TerugNaarRoot()
+        {
+            await Navigation.PopToRootAsync();
         }
     }
 }

@@ -21,7 +21,7 @@
             <Label x:Name="Lbl_Username" Text="Vul hier uw gebruikersnaam in:" />
             <Entry x:Name="Entry_Username" Placeholder="Gebruikersnaam" />
             <Label x:Name="Lbl_Password" Text="Vul hier uw wachtwoord in:" />
-            <Entry x:Name="Entry_Password" Placeholder="Wachtwoord" />
+            <Entry x:Name="Entry_Password" Placeholder="Wachtwoord" IsPassword="True" />
             <Button x:Name="Btn_SignIn" Text="Meld aan" Clicked="SignInProcedure" />
         </StackLayout>
     </StackLayout>

@@ -19,7 +19,6 @@ namespace LekkerLokaalApp.Views
     {
         private const string url = "https://www.bramdeconinck.com/apps/lekkerlokaal/v1/handelaars/";
         private HttpClient _Client = new HttpClient(new NativeMessageHandler());
-        Handelaar handelaar;
 
         public LoginPage()
         {
@@ -63,7 +62,7 @@ namespace LekkerLokaalApp.Views
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     Navigation.PopAsync();
-                    Navigation.PushAsync(new VerificatiePage(handelaar, result.Text));
+                    Navigation.PushAsync(new VerificatiePage(App.HandelaarDatabase.GetHandelaar(), result.Text));
                 });
             };
         }
@@ -79,14 +78,26 @@ namespace LekkerLokaalApp.Views
                     {
                         var content = await _Client.GetStringAsync(url + "/" + user.Username + "/" + user.Password);
                         var handelaarListTemp = JsonConvert.DeserializeObject<List<Handelaar>>(content);
-                        handelaar = handelaarListTemp[0];
+                        var handelaar = handelaarListTemp[0];
 
-                        if (handelaar.EersteAanmelding == "1")
-                            await DisplayAlert("Aanmelding", "Welkom, " + handelaar.Naam + "!" + " Aangezien dit uw eerste aanmelding is, verzoeken we u om een nieuw wachtwoord in te stellen en eventueel een smartlock toe te voegen.", "Oke");
+                        Handelaar dbHandelaar = App.HandelaarDatabase.GetHandelaar();
+                        if (dbHandelaar == null)
+                        {
+                            App.HandelaarDatabase.SaveHandelaar(handelaar);
+                        }   
+                        else
+                        {
+                            App.HandelaarDatabase.DeleteHandelaar(dbHandelaar.Id);
+                            App.HandelaarDatabase.SaveHandelaar(handelaar);
+                        }
 
                         User dbUser = App.UserDatabase.GetUser();
                         if (dbUser == null)
+                        {
                             App.UserDatabase.SaveUser(user);
+                            if (handelaar.EersteAanmelding == "1")
+                                await DisplayAlert("Aanmelding", "Welkom, " + handelaar.Naam + "!" + " Aangezien dit uw eerste aanmelding is, verzoeken we u om een nieuw wachtwoord in te stellen en eventueel een smartlock toe te voegen.", "Oke");
+                        }
 
                         Scanner();
                     }

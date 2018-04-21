@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="LekkerLokaalApp.Views.VerificatiePage">
+             x:Class="LekkerLokaalApp.Views.ValidatiePage">
     <ContentPage.Content>
-        <Frame x:Name="ValidatieFrame" Padding="20,20,20,20" HasShadow="False" HorizontalOptions="FillAndExpand" OutlineColor="Black" BackgroundColor="#ff0000" CornerRadius="0">
+        <Frame x:Name="ValidatieFrame" Padding="20,20,20,20" HasShadow="False" HorizontalOptions="FillAndExpand" OutlineColor="Black" BackgroundColor="#008000" CornerRadius="0">
             <StackLayout x:Name="MasterLayout" BackgroundColor="LightGray">
 
                 <StackLayout x:Name="LogoStack" VerticalOptions="FillAndExpand">
-                    <Image x:Name="VerificatieAfbeelding" Source="Kruisje.png" Margin="0,50,0,15" />
-                    <Label x:Name="VerificatieStatus" Text="Verificatie mislukt!" FontSize="Large" HorizontalOptions="Center" />
+                    <Image x:Name="VerificatieAfbeelding" Source="Vinkje.png" Margin="0,50,0,15" />
+                    <Label x:Name="VerificatieStatus" Text="Validatie voltooid!" FontSize="Large" HorizontalOptions="Center" />
                 </StackLayout>
 
                 <StackLayout x:Name="BoodschapStack" VerticalOptions="StartAndExpand">
@@ -19,9 +19,8 @@
                         </OnIdiom>
                     </StackLayout.Padding>
 
-                    <Label x:Name="Lbl_Melding" Text="Er is een fout opgetreden bij het ophalen van de gegevens." HorizontalOptions="CenterAndExpand" Margin="0,0,0,10" FontSize="Medium" />
-                    <Button x:Name="Btn_Terug" Clicked="TerugNaarBegin" Text="Ga terug naar begin" Margin="0,25,0,0"/>
-                    <Button x:Name="Btn_Procedure" Text="Probeer opnieuw" Clicked="Procedure"/>
+                    <Label x:Name="Lbl_Melding" Text="De cadeaubon is succesvol gevalideerd. Klik op de knop hieronder om terug te gaan naar het startscherm of sluit de app af." HorizontalOptions="CenterAndExpand" Margin="0,0,0,10" FontSize="Medium" />
+                    <Button x:Name="Btn_Terug" Clicked="TerugNaarBegin" Text="Ga terug naar begin" Margin="0,13,0,0"/>
                 </StackLayout>
             </StackLayout>
         </Frame>
