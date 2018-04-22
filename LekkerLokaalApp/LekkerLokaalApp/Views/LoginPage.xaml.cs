@@ -95,8 +95,8 @@ namespace LekkerLokaalApp.Views
                         if (dbUser == null)
                         {
                             App.UserDatabase.SaveUser(user);
-                            if (handelaar.EersteAanmelding == "1")
-                                await DisplayAlert("Aanmelding", "Welkom, " + handelaar.Naam + "!" + " Aangezien dit uw eerste aanmelding is, verzoeken we u om een nieuw wachtwoord in te stellen en eventueel een smartlock toe te voegen.", "Oke");
+                            //if (handelaar.EersteAanmelding == "1")
+                            //    await DisplayAlert("Aanmelding", "Welkom, " + handelaar.Naam + "!" + " Aangezien dit uw eerste aanmelding is, verzoeken we u om een nieuw wachtwoord in te stellen en eventueel een smartlock toe te voegen.", "Oke");
                         }
 
                         Scanner();

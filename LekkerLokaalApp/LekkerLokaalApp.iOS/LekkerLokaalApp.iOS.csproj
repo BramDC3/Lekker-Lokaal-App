@@ -87,6 +87,10 @@
     <CodesignKey>iPhone Distribution</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Data\SQLite_IOS.cs" />
     <Compile Include="Main.cs" />
@@ -149,5 +153,8 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Vinkje.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="LoginIcon.ico" />
   </ItemGroup>
 </Project>
