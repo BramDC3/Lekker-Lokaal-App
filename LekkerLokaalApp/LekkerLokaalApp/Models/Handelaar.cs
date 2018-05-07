@@ -12,9 +12,7 @@ namespace LekkerLokaalApp.Models
         public int HandelaarId { get; set; }
         public string BTW_Nummer { get; set; }
         public string Beschrijving { get; set; }
-        public string EersteAanmelding { get; set; }
         public string Emailadres { get; set; }
         public string Naam { get; set; }
-        public string Gebruikersnaam { get; set; }
     }
 }

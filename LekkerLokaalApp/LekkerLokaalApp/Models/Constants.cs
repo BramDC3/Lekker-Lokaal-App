@@ -10,7 +10,7 @@ namespace LekkerLokaalApp.Models
         public static bool IsDev = true;
 
         public static Color BackgroundColor = Color.FromRgb(58, 153, 215);
-        public static Color MainTextColor = Color.White;
+        public static Color MainTextColor = Color.Black;
 
         public static Color VerificatieMislukt = Color.FromHex("#ff0000");
         public static Color VerificatieGeslaagd = Color.FromHex("#008000");

@@ -11,7 +11,7 @@ namespace LekkerLokaalApp.Models
         public decimal Prijs { get; set; }
         public DateTime AanmaakDatum { get; set; }
         public int HandelaarId { get; set; }
-        public string Gebruikersnaam { get; set; }
+        public string Emailadres { get; set; }
         public int Geldigheid { get; set; }
     }
 }

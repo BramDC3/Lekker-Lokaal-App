@@ -21,7 +21,7 @@ namespace LekkerLokaalApp.Views
 
         private void Init()
         {
-            MasterLayout.BackgroundColor = Constants.BackgroundColor;
+            MasterLayout.BackgroundColor = Color.White;
             Lbl_Melding.TextColor = Constants.MainTextColor;
             VerificatieStatus.TextColor = Constants.VerificatieGeslaagd;
             VerificatieAfbeelding.HeightRequest = Constants.VerificatieHeight;

@@ -31,7 +31,7 @@ namespace LekkerLokaalApp.Views
 
         private void Init()
         {
-            MasterLayout.BackgroundColor = Constants.BackgroundColor;
+            MasterLayout.BackgroundColor = Color.White;
             Lbl_Melding.TextColor = Constants.MainTextColor;
             VerificatieStatus.TextColor = Constants.VerificatieMislukt;
             VerificatieAfbeelding.HeightRequest = Constants.VerificatieHeight;
@@ -63,7 +63,7 @@ namespace LekkerLokaalApp.Views
                                 await DisplayAlert("Aanmelding", "Er is een onverwachte fout opgetreden. Gelieve het later opnieuw te proberen.", "Oke");
                             }
                         }
-                        else if (cadeaubon.Gebruikersnaam != handelaar.Gebruikersnaam && cadeaubon.Gebruikersnaam != "generiek")
+                        else if (cadeaubon.Emailadres != handelaar.Emailadres && cadeaubon.Emailadres != "generiek@gmail.com")
                         {
                             Lbl_Melding.Text = "De ingescande QR-code is niet bruikbaar in deze winkel.";
                         }
@@ -131,7 +131,7 @@ namespace LekkerLokaalApp.Views
             {
                 try
                 {
-                    if (cadeaubon.Gebruikersnaam == "generiek")
+                    if (cadeaubon.Emailadres == "generiek@gmail.com")
                         cadeaubon.HandelaarId = App.HandelaarDatabase.GetHandelaar().HandelaarId;
                     cadeaubon.Geldigheid = 3;
                     await CadeaubonPut(cadeaubon);

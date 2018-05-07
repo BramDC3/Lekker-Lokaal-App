@@ -11,13 +11,14 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZXing.Net.Mobile.Forms;
+using System.Security.Cryptography;
 
 namespace LekkerLokaalApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
-        private const string url = "https://www.bramdeconinck.com/apps/lekkerlokaal/v1/handelaars/";
+        private const string url = "https://www.bramdeconinck.com/apps/lekkerlokaal/v1/handelaars.php?";
         private HttpClient _Client = new HttpClient(new NativeMessageHandler());
 
         public LoginPage()
@@ -69,14 +70,22 @@ namespace LekkerLokaalApp.Views
 
         private async void SignInProcedure(object sender, EventArgs e)
         {
-            User user = new User(Entry_Username.Text, Entry_Password.Text);
+            User user = App.UserDatabase.GetUser();
+            if (user == null)
+                user = new User(Entry_Username.Text, Entry_Password.Text);
+
             try
             {
                 if (user.CheckInformation())
                 {
                     try
                     {
-                        var content = await _Client.GetStringAsync(url + "/" + user.Username + "/" + user.Password);
+                        string paswoord;
+                        if (App.UserDatabase.GetUser() == null)
+                            paswoord = sha256(user.Password);
+                        else
+                            paswoord = user.Password;
+                        var content = await _Client.GetStringAsync(url + "id=" + user.Username + "&ww=" + paswoord);
                         var handelaarListTemp = JsonConvert.DeserializeObject<List<Handelaar>>(content);
                         var handelaar = handelaarListTemp[0];
 
@@ -94,9 +103,8 @@ namespace LekkerLokaalApp.Views
                         User dbUser = App.UserDatabase.GetUser();
                         if (dbUser == null)
                         {
+                            user.Password = paswoord;
                             App.UserDatabase.SaveUser(user);
-                            //if (handelaar.EersteAanmelding == "1")
-                            //    await DisplayAlert("Aanmelding", "Welkom, " + handelaar.Naam + "!" + " Aangezien dit uw eerste aanmelding is, verzoeken we u om een nieuw wachtwoord in te stellen en eventueel een smartlock toe te voegen.", "Oke");
                         }
 
                         Scanner();
@@ -119,6 +127,18 @@ namespace LekkerLokaalApp.Views
             {
                 await DisplayAlert("Aanmelding", "Uw gebruikersnaam en/of wachtwoord ontbreekt. Gelieve het opnieuw te proberen.", "Oke");
             }
+        }
+
+        private static string sha256(string randomString)
+        {
+            var crypt = new System.Security.Cryptography.SHA256Managed();
+            var hash = new System.Text.StringBuilder();
+            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(randomString));
+            foreach (byte theByte in crypto)
+            {
+                hash.Append(theByte.ToString("x2"));
+            }
+            return hash.ToString();
         }
     }
 }
