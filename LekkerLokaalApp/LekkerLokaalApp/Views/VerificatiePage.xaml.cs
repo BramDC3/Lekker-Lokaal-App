@@ -17,7 +17,7 @@ namespace LekkerLokaalApp.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class VerificatiePage : ContentPage
 	{
-        private const string url = "https://www.bramdeconinck.com/apps/lekkerlokaal/v1/cadeaubon/";
+        private const string url = "https://testlekkerlokaal.azurewebsites.net/api/mobieleapp/";
         private HttpClient _Client = new HttpClient(new NativeMessageHandler());
         private Cadeaubon cadeaubon;
         private bool Valideerbaar;
@@ -43,9 +43,8 @@ namespace LekkerLokaalApp.Views
         {
             try
             {
-                var content = await _Client.GetStringAsync(url + "/" + qrcode);
-                var cadeaubonListTemp = JsonConvert.DeserializeObject<List<Cadeaubon>>(content);
-                cadeaubon = cadeaubonListTemp[0];
+                var content = await _Client.GetStringAsync(url + qrcode);
+                cadeaubon = JsonConvert.DeserializeObject<Cadeaubon>(content);
 
                 switch (cadeaubon.Geldigheid)
                 {
@@ -106,9 +105,14 @@ namespace LekkerLokaalApp.Views
 
         private async Task CadeaubonPut(Cadeaubon cadeaubon)
         {
-            var json = JsonConvert.SerializeObject(cadeaubon);
-            HttpContent content = new StringContent(json);
-            var response = await _Client.PutAsync(url + "/" + cadeaubon.BestelLijnId, content);
+            var bon = new
+            {
+                HandelaarId = cadeaubon.HandelaarId,
+                Geldigheid = cadeaubon.Geldigheid
+            };
+            var json = JsonConvert.SerializeObject(bon);
+            HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _Client.PutAsync(url + cadeaubon.BestelLijnId, content);
         }
 
         private void Procedure(object sender, EventArgs e)

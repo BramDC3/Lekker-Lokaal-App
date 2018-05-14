@@ -18,7 +18,7 @@ namespace LekkerLokaalApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
-        private const string url = "https://www.bramdeconinck.com/apps/lekkerlokaal/v1/handelaars.php?";
+        private const string url = "https://testlekkerlokaal.azurewebsites.net/api/mobieleapp/";
         private HttpClient _Client = new HttpClient(new NativeMessageHandler());
 
         public LoginPage()
@@ -70,9 +70,7 @@ namespace LekkerLokaalApp.Views
 
         private async void SignInProcedure(object sender, EventArgs e)
         {
-            User user = App.UserDatabase.GetUser();
-            if (user == null)
-                user = new User(Entry_Username.Text, Entry_Password.Text);
+            var user = new User(Entry_Username.Text, Entry_Password.Text);
 
             try
             {
@@ -80,20 +78,14 @@ namespace LekkerLokaalApp.Views
                 {
                     try
                     {
-                        string paswoord;
-                        if (App.UserDatabase.GetUser() == null)
-                            paswoord = sha256(user.Password);
-                        else
-                            paswoord = user.Password;
-                        var content = await _Client.GetStringAsync(url + "id=" + user.Username + "&ww=" + paswoord);
-                        var handelaarListTemp = JsonConvert.DeserializeObject<List<Handelaar>>(content);
-                        var handelaar = handelaarListTemp[0];
+                        var content = await _Client.GetStringAsync(url + user.Username + "/" + user.Password);
+                        var handelaar = JsonConvert.DeserializeObject<Handelaar>(content);
 
                         Handelaar dbHandelaar = App.HandelaarDatabase.GetHandelaar();
                         if (dbHandelaar == null)
                         {
                             App.HandelaarDatabase.SaveHandelaar(handelaar);
-                        }   
+                        }
                         else
                         {
                             App.HandelaarDatabase.DeleteHandelaar(dbHandelaar.Id);
@@ -103,7 +95,6 @@ namespace LekkerLokaalApp.Views
                         User dbUser = App.UserDatabase.GetUser();
                         if (dbUser == null)
                         {
-                            user.Password = paswoord;
                             App.UserDatabase.SaveUser(user);
                         }
 
@@ -115,7 +106,7 @@ namespace LekkerLokaalApp.Views
                     }
                     catch (Exception)
                     {
-                        await DisplayAlert("Aanmelding", "Er kan op dit moment geen verbinding worden gemaakt met het internet. Gelieve het later opnieuw te proberen.", "Oke");
+                        await DisplayAlert("Aanmelding", "Er kan op moment geen verbinding gemaakt worden met de server. Gelieve het later opnieuw te proberen.", "Oke");
                     }
                 }
                 else
